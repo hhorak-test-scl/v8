@@ -97,7 +97,7 @@ export ICU_LINK_FLAGS=`pkg-config --libs-only-l icu`
 make %{target}.release %{?_smp_mflags} \
       console=readline \
       library=shared \
-      soname_version=%{?scl:%{scl_name}.}%{sover} \
+      soname_version=%{?scl:%{scl_name}-}%{sover} \
       $MAKE_EXTRA_FLAGS \
       $ICU_LINK_FLAGS
 %{?scl:"}
@@ -109,7 +109,7 @@ mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_bindir}
 
 install -p include/*.h %{buildroot}%{_includedir}
-install -p out/%{target}.release/lib.target/libv8.so.%{?scl:%{scl_name}.}%{sover} %{buildroot}%{_libdir}
+install -p out/%{target}.release/lib.target/libv8.so.%{?scl:%{scl_name}-}%{sover} %{buildroot}%{_libdir}
 install -p -m0755 out/%{target}.release/d8 %{buildroot}%{_bindir}
 install -p -m0755 out/%{target}.release/mksnapshot %{buildroot}%{_bindir}/v8-mksnapshot
 install -p -m0755 out/%{target}.release/preparser %{buildroot}%{_bindir}/v8-preparser
@@ -131,8 +131,8 @@ install -p -m0744 tools/js2c.py %{buildroot}%{?_scl_root}%{python_sitelib}/
 chmod -R -x %{buildroot}%{?_scl_root}%{python_sitelib}/*.py*
 
 pushd %{buildroot}%{_libdir}
-ln -sf libv8.so.%{?scl:%{scl_name}.}%{sover} libv8.so%{?scl:.%{?scl_name}}
-ln -sf libv8.so.%{?scl:%{scl_name}.}%{sover} libv8.so%{?scl:.%{?scl_name}}.%{somajor}
+ln -sf libv8.so.%{?scl:%{scl_name}-}%{sover} libv8.so%{?scl:.%{?scl_name}}
+ln -sf libv8.so.%{?scl:%{scl_name}-}%{sover} libv8.so%{?scl:.%{?scl_name}-}%{somajor}
 popd
 
 %check 
@@ -149,7 +149,8 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog LICENSE
-%{_libdir}/*.so%{?scl:.%{scl_name}}.*
+%{_libdir}/*.so%{?scl:.%{scl_name}-}*
+%{_libdir}/*.so%{?scl:.%{scl_name}}
 
 %files devel
 %defattr(-,root,root,-)

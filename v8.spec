@@ -35,7 +35,7 @@
 
 Name:		%{?scl_prefix}v8
 Version:	%{somajor}.%{sominor}.%{sobuild}.%{sotiny}
-Release:	2.3%{?dist}
+Release:	2.4%{?dist}
 Epoch:		1
 Summary:	JavaScript Engine
 Group:		System Environment/Libraries
@@ -162,6 +162,9 @@ rm -rf %{buildroot}
 %{?_scl_root}%{python_sitelib}/j*.py*
 
 %changelog
+* Mon Nov 25 2013 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-2.4
+- changed .so suffix to libv8.so.v8314-3.14.5
+
 * Thu Oct 10 2013 Tomas Hrcka  <thrcka@redhat.com> - 1:3.14.5.10-2.3
  - fixed typo in install section
 

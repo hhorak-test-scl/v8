@@ -35,7 +35,7 @@
 
 Name:		%{?scl_prefix}v8
 Version:	%{somajor}.%{sominor}.%{sobuild}.%{sotiny}
-Release:	2.4%{?dist}
+Release:	3.5%{?dist}
 Epoch:		1
 Summary:	JavaScript Engine
 Group:		System Environment/Libraries
@@ -166,6 +166,10 @@ rm -rf %{buildroot}
 %{?_scl_root}%{python_sitelib}/j*.py*
 
 %changelog
+* Tue Nov 26 2013 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-3.5
+- add simlink to libv8.so
+- obsoletes v8 in all other collections
+
 * Mon Nov 25 2013 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-2.4
 - changed .so suffix to libv8.so.v8314-3.14.5
 

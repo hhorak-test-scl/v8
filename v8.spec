@@ -54,6 +54,7 @@ Patch1:		v8-3.14.5.8-CVE-2013-2634.patch
 Patch2:         v8-3.14.5.10-CVE-2013-2882.patch
 #we need this to get over some ugly code
 Patch3:		gcc-48-fix.patch
+Obsoletes: 	nodejs010-v8, ruby193-v8, mongodb24-v8 
 
 %{?scl:Requires: %{scl}-runtime}
 
@@ -66,6 +67,7 @@ as specified in ECMA-262, 3rd edition.
 Group:		Development/Libraries
 Summary:	Development headers and libraries for v8
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:      nodejs010-v8-devel, ruby193-v8-devel, mongodb24-v8-devel
 
 %description devel
 Development headers and libraries for v8.
@@ -131,6 +133,7 @@ install -p -m0744 tools/js2c.py %{buildroot}%{?_scl_root}%{python_sitelib}/
 chmod -R -x %{buildroot}%{?_scl_root}%{python_sitelib}/*.py*
 
 pushd %{buildroot}%{_libdir}
+ln -sf libv8.so.%{?scl:%{scl_name}-}%{sover} libv8.so
 ln -sf libv8.so.%{?scl:%{scl_name}-}%{sover} libv8.so%{?scl:.%{?scl_name}}
 ln -sf libv8.so.%{?scl:%{scl_name}-}%{sover} libv8.so%{?scl:.%{?scl_name}-}%{somajor}
 popd
@@ -154,6 +157,7 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,root,root,-)
+%{_libdir}/*.so
 %{_libdir}/*.so%{?scl:.%{scl_name}}
 %{_bindir}/*
 %{_includedir}/*.h

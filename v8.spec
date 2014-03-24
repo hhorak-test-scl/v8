@@ -35,7 +35,7 @@
 
 Name:		%{?scl_prefix}v8
 Version:	%{somajor}.%{sominor}.%{sobuild}.%{sotiny}
-Release:	3.5%{?dist}
+Release:	3.6%{?dist}
 Epoch:		1
 Summary:	JavaScript Engine
 Group:		System Environment/Libraries
@@ -47,7 +47,7 @@ URL:		http://code.google.com/p/v8
 Source0:        v8-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{pkg_name}-%{version}-%{release}-root-%(%{__id_u} -n)
 ExclusiveArch:	%{ix86} x86_64 %{arm}
-BuildRequires:	%{?scl_prefix}gyp, readline-devel, libicu-devel
+BuildRequires:	%{?scl_prefix}gyp, readline-devel, libicu-devel, chrpath
 #backport fix for CVE-2013-2634 (RHBZ#924495)
 Patch1:		v8-3.14.5.8-CVE-2013-2634.patch
 #backport fix for CVE-2013-2882 (RHBZ#991116)
@@ -138,6 +138,11 @@ ln -sf libv8.so.%{?scl:%{scl_name}-}%{sover} libv8.so%{?scl:.%{?scl_name}}
 ln -sf libv8.so.%{?scl:%{scl_name}-}%{sover} libv8.so%{?scl:.%{?scl_name}-}%{somajor}
 popd
 
+#remove rpaths
+chrpath --delete $RPM_BUILD_ROOT%{_bindir}/d8
+chrpath --delete $RPM_BUILD_ROOT%{_bindir}/v8-shell
+chrpath --delete $RPM_BUILD_ROOT%{_bindir}/v8-process
+
 %check 
 #make %{target}.check 
 %clean
@@ -166,6 +171,9 @@ rm -rf %{buildroot}
 %{?_scl_root}%{python_sitelib}/j*.py*
 
 %changelog
+* Mon Mar 24 2014 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-3.6
+- Remove rpaths
+
 * Tue Nov 26 2013 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-3.5
 - add simlink to libv8.so
 - obsoletes v8 in all other collections

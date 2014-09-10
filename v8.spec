@@ -35,7 +35,7 @@
 
 Name:		%{?scl_prefix}v8
 Version:	%{somajor}.%{sominor}.%{sobuild}.%{sotiny}
-Release:	3.6%{?dist}
+Release:	4%{?dist}
 Epoch:		1
 Summary:	JavaScript Engine
 Group:		System Environment/Libraries
@@ -49,11 +49,51 @@ BuildRoot:	%{_tmppath}/%{pkg_name}-%{version}-%{release}-root-%(%{__id_u} -n)
 ExclusiveArch:	%{ix86} x86_64 %{arm}
 BuildRequires:	%{?scl_prefix}gyp, readline-devel, libicu-devel, chrpath
 #backport fix for CVE-2013-2634 (RHBZ#924495)
-Patch1:		v8-3.14.5.8-CVE-2013-2634.patch
+Patch1:	    v8-3.14.5.8-CVE-2013-2634.patch
 #backport fix for CVE-2013-2882 (RHBZ#991116)
-Patch2:         v8-3.14.5.10-CVE-2013-2882.patch
+Patch2:     v8-3.14.5.10-CVE-2013-2882.patch
+#backport fix for CVE-2013-6640 (RHBZ#1039889)
+Patch3:     v8-3.14.5.10-CVE-2013-6640.patch
+
+#backport fix for enumeration for objects with lots of properties
+#https://codereview.chromium.org/11362182
+Patch4:     v8-3.14.5.10-enumeration.patch
+
+#backport fix for CVE-2013-6650 (RHBZ#1059070)
+Patch5:     v8-3.14.5.10-CVE-2013-6650.patch
+
+#backport only applicable fix for CVE-2014-1704 (RHBZ#1077136)
+#the other two patches don't affect this version of v8
+Patch6:     v8-3.14.5.10-CVE-2014-1704-1.patch
+
+# use clock_gettime() instead of gettimeofday(), which increases performance
+# dramatically on virtual machines
+# https://github.com/joyent/node/commit/f9ced08de30c37838756e8227bd091f80ad9cafa
+# see above link or head of patch for complete rationale
+Patch7:     v8-3.14.5.10-use-clock_gettime.patch
+
+# fix corner case in x64 compare stubs
+# fixes bug resulting in an incorrect result when comparing certain integers
+# (e.g. 2147483647 > -2147483648 is false instead of true)
+# https://code.google.com/p/v8/issues/detail?id=2416
+# https://github.com/joyent/node/issues/7528
+Patch8:     v8-3.14.5.10-x64-compare-stubs.patch
+
+# backport security fix for memory corruption/stack overflow (RHBZ#1125464)
+# https://groups.google.com/d/msg/nodejs/-siJEObdp10/2xcqqmTHiEMJ
+# https://github.com/joyent/node/commit/530af9cb8e700e7596b3ec812bad123c9fa06356
+Patch9:     v8-3.14.5.10-mem-corruption-stack-overflow.patch
+
+# backport bugfix for x64 MathMinMax:
+#   Fix x64 MathMinMax for negative untagged int32 arguments.
+#   An untagged int32 has zeros in the upper half even if it is negative.
+#   Using cmpq to compare such numbers will incorrectly ignore the sign.
+# https://github.com/joyent/node/commit/3530fa9cd09f8db8101c4649cab03bcdf760c434
+Patch10:    v8-3.14.5.10-x64-MathMinMax.patch
+
 #we need this to get over some ugly code
-Patch3:		gcc-48-fix.patch
+Patch11:    gcc-48-fix.patch
+
 Obsoletes: 	nodejs010-v8, ruby193-v8, mongodb24-v8 
 
 %{?scl:Requires: %{scl}-runtime}
@@ -77,6 +117,17 @@ Development headers and libraries for v8.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
+
+
+
 
 %build
 mkdir -p build/gyp
@@ -171,6 +222,11 @@ rm -rf %{buildroot}
 %{?_scl_root}%{python_sitelib}/j*.py*
 
 %changelog
+* Wed Sep 10 2014 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-4
+- multiple CVE fixes
+- CVE-2013-6639 CVE-2013-6640 CVE-2013-6650 
+- CVE-2013-6668 CVE-2014-1704 CVE-2014-5256
+
 * Mon Mar 24 2014 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-3.6
 - Remove rpaths
 

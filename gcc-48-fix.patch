@@ -19,7 +19,7 @@ index 78888b8..e49e54d 100644
              'cflags': [ '-Wall', '<(werror)', '-W', '-Wno-unused-parameter',
 -                        '-Wnon-virtual-dtor', '-Woverloaded-virtual' ],
 +                        '-Wnon-virtual-dtor', '-Woverloaded-virtual',
-+			'-Wno-unused-local-typedefs', '-Wno-aggressive-loop-optimizations' ],
++			'-Wno-unused-local-typedefs', '-Wno-aggressive-loop-optimizations', '-Wnoerror=unused-but-set-variable' ],
            }],
            ['OS=="android"', {
              'variables': {
@@ -31,7 +31,7 @@ index 7145a16..84c072c 100644
         or OS=="netbsd"', {
        'target_defaults': {
          'cflags': [ '-Wall', '<(werror)', '-W', '-Wno-unused-parameter',
-+		    '-Wno-unused-local-typedefs', '-Wno-aggressive-loop-optimizations',
++		    '-Wno-unused-local-typedefs', '-Wno-aggressive-loop-optimizations', '-Wnoerror=unused-but-set-variable',
                      '-Wnon-virtual-dtor', '-pthread', '-fno-rtti',
                      '-fno-exceptions', '-pedantic' ],
          'ldflags': [ '-pthread', ],

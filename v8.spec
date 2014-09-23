@@ -35,7 +35,7 @@
 
 Name:		%{?scl_prefix}v8
 Version:	%{somajor}.%{sominor}.%{sobuild}.%{sotiny}
-Release:	4%{?dist}
+Release:	5%{?dist}
 Epoch:		1
 Summary:	JavaScript Engine
 Group:		System Environment/Libraries
@@ -93,6 +93,9 @@ Patch10:    v8-3.14.5.10-x64-MathMinMax.patch
 
 #we need this to get over some ugly code
 Patch11:    gcc-48-fix.patch
+Patch12:    v8-3.14.5.10-unused-local-typedefs.patch
+Patch13:    v8-3.14.5.10-CVE-2013-6668.patch
+Patch14:    v8-3.14.5.10-CVE-2013-6668-segfault.patch
 
 Obsoletes: 	nodejs010-v8, ruby193-v8, mongodb24-v8 
 
@@ -125,8 +128,9 @@ Development headers and libraries for v8.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
-
-
+%patch12 -p1
+%patch13 -p1
+%patch14 -p1
 
 
 %build
@@ -222,6 +226,9 @@ rm -rf %{buildroot}
 %{?_scl_root}%{python_sitelib}/j*.py*
 
 %changelog
+* Tue Sep 23 2014 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-5
+- Add CVE-2013-6668 patch
+
 * Wed Sep 10 2014 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-4
 - multiple CVE fixes
 - CVE-2013-6639 CVE-2013-6640 CVE-2013-6650 

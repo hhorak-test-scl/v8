@@ -95,7 +95,8 @@ Patch10:    v8-3.14.5.10-x64-MathMinMax.patch
 Patch11:    gcc-48-fix.patch
 Patch12:    v8-3.14.5.10-unused-local-typedefs.patch
 Patch13:    v8-3.14.5.10-CVE-2013-6668.patch
-Patch14:    v8-3.14.5.10-CVE-2013-6668-segfault.patch
+Patch14:    v8-3.14.5.10-CVE-2013-6668-segfault.patch 
+Patch15:    v8-3.14.5.10-use-upstream-test-values-regress-test-1122.patch
 
 Obsoletes: 	nodejs010-v8, ruby193-v8, mongodb24-v8 
 
@@ -131,6 +132,7 @@ Development headers and libraries for v8.
 %patch12 -p1
 %patch13 -p1
 %patch14 -p1
+%patch15 -p1
 
 
 %build

@@ -35,7 +35,7 @@
 
 Name:		%{?scl_prefix}v8
 Version:	%{somajor}.%{sominor}.%{sobuild}.%{sotiny}
-Release:	5%{?dist}
+Release:	6%{?dist}
 Epoch:		1
 Summary:	JavaScript Engine
 Group:		System Environment/Libraries
@@ -228,6 +228,9 @@ rm -rf %{buildroot}
 %{?_scl_root}%{python_sitelib}/j*.py*
 
 %changelog
+* Tue Sep 30 2014 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-6
+- Update regress test 1122
+
 * Tue Sep 23 2014 Tomas Hrcka <thrcka@redhat.com> - 1:3.14.5.10-5
 - Add CVE-2013-6668 patch
 
